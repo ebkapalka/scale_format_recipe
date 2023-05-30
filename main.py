@@ -1,18 +1,17 @@
 from gochujang_recipes import gochujang_recipes
 
 
-def assert_same_keys(dict_of_dicts: dict) -> None:
+def force_same_keys(recipes: dict) -> None:
     """
-    Asserts that all the dictionaries in a dictionary
-        of dictionaries all have the same keys
-    :param dict_of_dicts: dictionary of dictionaries
+    Forces all recipes to have the same keys
+    :param recipes: dictionary of dictionaries representing recipes
     :return: None
     """
-    dict_keys = [set(d.keys()) for d in dict_of_dicts.values()]
-    first_keys_set: set = dict_keys[0]
-    for keys_set in dict_keys[1:]:
-        assert keys_set == first_keys_set, \
-            "Dictionaries have different keys"
+    all_ingredients = [set(d.keys()) for d in recipes.values()]
+    all_ingredients = set().union(*all_ingredients)
+    for recipe in recipes:
+        for ingredient in all_ingredients:
+            recipes[recipe].setdefault(ingredient, 0)
 
 
 def scale_recipe(recipe: dict, desired_total: int = 1000) -> dict:
@@ -35,8 +34,8 @@ def format_recipes(recipes: dict) -> list:
     """
     first_recipe: dict = recipes[list(recipes.keys())[0]]
     lines = [
-        ' | '.join([''] + list(recipes.keys())),
-        '|'.join([":--"] + ["--:"] * (1 + len(recipes.keys())))
+        ' | '.join(['...'] + list(recipes.keys())),
+        '|'.join([":--"] + ["--:"] * (len(recipes.keys())))
     ]
     for ingredient in first_recipe.keys():
         line: list = [ingredient]
@@ -47,7 +46,7 @@ def format_recipes(recipes: dict) -> list:
 
 
 def main():
-    assert_same_keys(gochujang_recipes)
+    force_same_keys(gochujang_recipes)
     scaled_recipes: dict = {}
     for key in gochujang_recipes:
         scaled_recipes[key] = scale_recipe(gochujang_recipes[key], 1000)
