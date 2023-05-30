@@ -15,7 +15,7 @@ def assert_same_keys(dict_of_dicts: dict) -> None:
             "Dictionaries have different keys"
 
 
-def scale_recipe(recipe: dict, desired_total: int) -> dict:
+def scale_recipe(recipe: dict, desired_total: int = 1000) -> dict:
     """
     Scales a recipe to a desired total
     :param recipe: dictionary of ingredients and amounts
