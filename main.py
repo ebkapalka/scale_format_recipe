@@ -46,10 +46,14 @@ def format_recipes(recipes: dict) -> list:
     return lines
 
 
-if __name__ == '__main__':
+def main():
     assert_same_keys(gochujang_recipes)
     scaled_recipes: dict = {}
     for key in gochujang_recipes:
         scaled_recipes[key] = scale_recipe(gochujang_recipes[key], 1000)
     output: list = format_recipes(scaled_recipes)
     print('\n'.join(output))
+
+
+if __name__ == '__main__':
+    main()
