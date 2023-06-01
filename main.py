@@ -26,10 +26,11 @@ def scale_recipe(recipe: dict, desired_total: int = 1000) -> dict:
     return {k: v * scale for k, v in sorted(recipe.items())}
 
 
-def format_recipes(recipes: dict) -> list:
+def format_recipes(recipes: dict, unit: str = 'g') -> list:
     """
     Prints out the recipes in Reddit table format
     :param recipes: dictionary of recipes
+    :param unit: suffix to add to each amount
     :return: None
     """
     first_recipe: dict = recipes[list(recipes.keys())[0]]
@@ -40,7 +41,7 @@ def format_recipes(recipes: dict) -> list:
     for ingredient in first_recipe.keys():
         line: list = [ingredient]
         for recipe in recipes.keys():
-            line.append(f"{recipes[recipe][ingredient]:.2f}g")
+            line.append(f"{recipes[recipe][ingredient]:.2f}{unit}")
         lines.append(' | '.join(line))
     return lines
 
@@ -49,8 +50,8 @@ def main():
     force_same_keys(gochujang_recipes)
     scaled_recipes: dict = {}
     for key in gochujang_recipes:
-        scaled_recipes[key] = scale_recipe(gochujang_recipes[key], 1000)
-    output: list = format_recipes(scaled_recipes)
+        scaled_recipes[key] = scale_recipe(gochujang_recipes[key], 100)
+    output: list = format_recipes(scaled_recipes, unit='%')
     print('\n'.join(output))
 
 
